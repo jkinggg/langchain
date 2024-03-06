@@ -53,6 +53,11 @@ def parse_ai_message_to_openai_tool_action(
         else:
             tool_input = _tool_input
 
+        if function_name == "final_response_with_citations":
+            return AgentFinish(
+                return_values=tool_input, log=str(tool_call)
+            )
+
         content_msg = f"responded: {message.content}\n" if message.content else "\n"
         log = f"\nInvoking: `{function_name}` with `{tool_input}`\n{content_msg}\n"
         actions.append(
